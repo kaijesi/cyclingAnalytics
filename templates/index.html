@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <h2>Your Portfolio</h2>
+    <div class="container">
+    {% if portfolio %}
+        <table class="table">
+            <thead>
+            {% for key in portfolio[0].keys() %}
+                <th>
+                {% if key == "symbol" %}
+                Stock Symbol
+                {% elif key == "amount_owned" %}
+                Number of Shares Owned
+                {% elif key == "current_price" %}
+                Current Price per Share
+                {% elif key == "current_total_value" %}
+                Current Total Value
+                {% endif %}
+                </th>
+            {% endfor %}
+            <th>Buy/Sell</td>
+            </thead>
+            <tbody>
+            {% for record in portfolio %}
+                <tr>
+                {% for key, value in record.items() %}
+                    {% if key == "current_price" or key == "current_total_value" %}
+                    <td>{{ value | usd }}</td>
+                    {% else %}
+                    <td>{{ value }}</td>
+                    {% endif %}
+                {% endfor %}
+                <td>
+                <form action="/buy" method="post">
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="shares" name="shares" placeholder="Amount" type="number">
+                        <input name="symbol" type="hidden" value={{ record["symbol"] }}>
+                    </div>
+                    <button class="btn btn-primary" type="submit" name="submit_button" value="index_edit">Buy</button>
+                </form><br>
+                <form action="/sell" method="post">
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="shares" name="shares" placeholder="Amount" type="number">
+                        <input name="symbol" type="hidden" value={{ record["symbol"] }}>
+                    </div>
+                    <button class="btn btn-primary" type="submit" name="submit_button" value="index_edit">Sell</button>
+                </form>
+                </td>
+                </tr>
+            {% endfor %}
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th>Current Stocks Total:</th>
+            </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ stocks | usd }}</td>
+            </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th>Current Cash Total:</th>
+            </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ cash | usd }}</td>
+            </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th>Grand Total:</th>
+            </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ total | usd }}</td>
+            </tbody>
+        </table>
+    {% else %}
+    <table class="table">
+    </tr>
+    <tr>
+    <th>Current Cash Total:</th>
+    </tr>
+    </tr>
+    <tr>
+    <td>{{ cash | usd }}</td>
+    </tr>
+    <tr>
+    <th>Grand Total:</th>
+    </tr>
+    <tr>
+    <td>{{ total | usd }}</td>
+    </table>
+    {% endif %}
+    </div>
+{% endblock %}

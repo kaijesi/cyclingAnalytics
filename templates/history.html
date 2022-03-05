@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <h2>Transaction History</h2>
+    <div class="container">
+        <table class="table">
+            <thead>
+                {% for key in transactions[0].keys() %}
+                    <th>
+                    {% if key == "symbol" %}
+                    Stock Symbol
+                    {% elif key == "amount" %}
+                    Number of Shares
+                    {% elif key == "value_at_transaction" %}
+                    Value at Time of Transaction
+                    {% elif key == "purchase" %}
+                    Transaction Type
+                    {% elif key == "total_transaction_value" %}
+                    Total Change in Cash
+                    {% elif key == "timestamp_unixsec" %}
+                    Time of Transaction
+                    {% endif %}
+                    </th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                    {% for key, value in transaction.items() %}
+                        {% if key == "total_transaction_value" %}
+                            {% if transaction["purchase"] == "Sale" %}
+                            <td style="color:#009933;">{{ value | usd }}</td>
+                            {% else %}
+                            <td style="color:#990000;">-{{ value | usd }}</td>
+                            {% endif%}
+                        {% elif key == "value_at_transaction" %}
+                        <td>
+                        {{ value | usd }}
+                        </td>
+                        {% else %}
+                        <td>
+                        {{ value }}
+                        </td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

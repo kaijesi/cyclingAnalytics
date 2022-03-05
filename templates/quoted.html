@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <h2>Your Quote:</h2>
+    <p>1 Stock of {{ company }} currently costs {{ price | usd }}.</p>
+{% endblock %}

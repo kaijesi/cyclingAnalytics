@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Transaction Summary
+{% endblock %}
+
+{% block main %}
+    <h2>Summary</h2>
+    <div class="mb-3">
+        <p>Your {{ type }} of {{ amount }} shares of {{ company }} ({{ symbol }}) at a price of {{ price | usd }} has been completed.
+        <p><strong>Total Amount: {{ total | usd }}</strong></p>
+        <p><strong>New Cash Balance: {{ cash | usd }}</strong></p>
+    </div>
+
+{% endblock %}
